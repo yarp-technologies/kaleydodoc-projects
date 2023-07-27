@@ -9,7 +9,4 @@ class Core:
         self.tags = regex
 
     def process(self):
-        path = DocxTemplatePlaceholder(self.template, self.tags).process()
-        return path
-
-
+        return DocxTemplatePlaceholder(self.template, self.tags).process()
