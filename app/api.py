@@ -1,19 +1,19 @@
 from uvicorn import Config, Server
 import asyncio
-import uuid
-from fastapi import FastAPI, Request, Form, UploadFile, File, Body, status
-from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 from core.core_object import Core
-from constants.variables import *
 from constants.msg import *
 from urllib.parse import urlencode
 from adittional_modules import *
+import json
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="../templates")
+
 
 @app.get("/")
 async def start_menu(request: Request):
@@ -22,6 +22,22 @@ async def start_menu(request: Request):
 @app.get("/file", response_class=FileResponse)
 async def download_file(filename: str):
     return FileResponse(os.path.join(FILE_FOLDER, filename), filename=filename)
+
+@app.post("/api_module", response_class=FileResponse)
+async def convert_file(file: UploadFile = File(None), tags: str = Form(None)):
+    file_path = save_file(file)
+    if file_path is None:
+        return None
+    try:
+        tags_ = json.loads(tags)
+    except:
+        return None
+    filler = Core(file_path, tags_).process()
+    if filler is None:
+        return None
+    file = Path(filler).name
+    return FileResponse(os.path.join(FILE_FOLDER, file), filename=file)
+
 
 @app.post("/template", response_class=HTMLResponse)
 async def dounload_filled_template(
@@ -36,6 +52,10 @@ async def dounload_filled_template(
         return templates.TemplateResponse("error_msg.html", result)
     regex = prepare_regex(input_text_data)
     filler = Core(file_path, regex).process()
+    if filler is None:
+        result = {"request": request,
+                  "msg": MISSING_FILE}
+        return templates.TemplateResponse("error_msg.html", result)
     file = Path(filler).name
     url = f"/file?{urlencode({'filename': file})}"
     result = {"request": request,

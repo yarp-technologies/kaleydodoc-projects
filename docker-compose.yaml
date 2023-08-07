@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+  api:
+    container_name: pdf_convertor_python
+    image: pdf_convertor-python
+    build:
+      dockerfile: "docker/python/Dockerfile"

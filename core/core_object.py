@@ -1,10 +1,10 @@
-from typing import Dict
+from typing import Dict, Any
 from .docx_template_placeholder import DocxTemplatePlaceholder
 
 
 class Core:
 
-    def __init__(self, file, regex: Dict):
+    def __init__(self, file: Any, regex: Dict):
         self.template = file
         self.tags = regex
 

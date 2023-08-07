@@ -2,6 +2,7 @@ import re
 from docx import Document
 from typing import Dict
 from constants.variables import *
+from constants.msg import ErrorType
 from .pdf_convertor import Convert2PDF
 
 
@@ -11,15 +12,22 @@ class DocxTemplatePlaceholder:
                  template: str,
                  tags: Dict,
 ):
-        self.template_document = Document(template)
-        self.file_name = template.split('/')[-1]
-        self.replace_tags = self.__prepare_tags(tags)
+        self.error = 0
+        try:
+            self.template_document = Document(template)
+            self.file_name = template.split('/')[-1]
+            self.replace_tags = self.__prepare_tags(tags)
+        except:
+            self.error = ErrorType.no_correct_doc
 
     def process(self):
-        self.__process(self.template_document, self.replace_tags)
-        path = FILE_FOLDER + "/" + self.file_name
-        self.template_document.save(path)
-        return Convert2PDF(path).DocxToPdf()
+        if self.error == ErrorType.ok:
+            self.__process(self.template_document, self.replace_tags)
+            path = FILE_FOLDER + "/" + self.file_name
+            self.template_document.save(path)
+            return Convert2PDF(path).DocxToPdf()
+        else:
+            return None
 
     def __process(self, doc, tags):
         for p in doc.paragraphs:
@@ -39,5 +47,5 @@ class DocxTemplatePlaceholder:
     def __prepare_tags(self, tags):
         done_tags = dict()
         for regex, replace in tags.items():
-            done_tags[re.compile(regex)] = replace
+            done_tags[re.compile(fr"<<{regex}>>")] = replace
         return done_tags
