@@ -54,7 +54,7 @@ async def dounload_filled_template(
     regex = prepare_regex(input_text_data)
     filler = Core(file_path, regex).process()
     print(filler)
-    if filler is None:
+    if filler != ErrorType.ok:
         result = {"request": request,
                   "msg": MISSING_FILE + str(filler)}
         return templates.TemplateResponse("error_msg.html", result)
