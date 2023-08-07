@@ -46,12 +46,14 @@ async def dounload_filled_template(
         input_text_data: str = Form(default=None)
 ):
     file_path = save_file(input_file_data)
+    print(file_path)
     if file_path is None:
         result = {"request": request,
                   "msg": MISSING_FILE}
         return templates.TemplateResponse("error_msg.html", result)
     regex = prepare_regex(input_text_data)
     filler = Core(file_path, regex).process()
+    print(filler)
     if filler is None:
         result = {"request": request,
                   "msg": MISSING_FILE + str(filler)}
