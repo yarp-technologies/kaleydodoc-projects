@@ -3,6 +3,9 @@ version: "3.9"
 services:
   api:
     container_name: pdf_convertor_python
-    image: pdf_convertor-python
+    image: pdf_convertor_python
     build:
       dockerfile: "docker/api/Dockerfile"
+    ports:
+      - "7777:7777"
+    restart: always
