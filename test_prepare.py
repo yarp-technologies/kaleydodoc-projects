@@ -1,7 +1,7 @@
 import requests
 import json
 
-file = {'file': open("IT-Test-template.docx", 'rb')}
+file = {'file': open("./test_files/typical.docx", 'rb')}
 
 regex = {"Browser": "Gooogle",
          "Version": "0.0.0.0.1",
@@ -11,7 +11,9 @@ regex = {"Browser": "Gooogle",
 
 data = {"tags": json.dumps(regex)}
 
-res = requests.post("http://0.0.0.0:7777/api_module", files=file, data=data)
+res = requests.post("http://81.200.156.178:7777/api_module", files=file, data=data)
+
+print(res.text)
 
 with open("out_files/out.pdf", "wb") as code:
     code.write(res.content)

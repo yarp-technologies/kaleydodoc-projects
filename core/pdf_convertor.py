@@ -1,6 +1,7 @@
 import subprocess
 import os
 from constants.variables import *
+from constants.msg import ErrorType
 
 
 class Convert2PDF:
@@ -8,6 +9,7 @@ class Convert2PDF:
     def __init__(self, file_path: str):
         # Todo под расширение для других форматов
         self.file = file_path
+        self.error = ErrorType.ok
 
     def DocxToPdf(self):
         try:
@@ -23,4 +25,5 @@ class Convert2PDF:
             path = FILE_FOLDER + '/' + self.file.split('/')[-1].split('.')[0] + '.pdf'
             return path
         except:
-            return None
+            self.error = ErrorType.no_correct_doc
+            return self.error

@@ -54,7 +54,7 @@ async def dounload_filled_template(
     filler = Core(file_path, regex).process()
     if filler is None:
         result = {"request": request,
-                  "msg": MISSING_FILE}
+                  "msg": MISSING_FILE + filler}
         return templates.TemplateResponse("error_msg.html", result)
     file = Path(filler).name
     url = f"/file?{urlencode({'filename': file})}"

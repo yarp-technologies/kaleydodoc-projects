@@ -18,7 +18,7 @@ class DocxTemplatePlaceholder:
             self.file_name = template.split('/')[-1]
             self.replace_tags = self.__prepare_tags(tags)
         except:
-            self.error = ErrorType.no_correct_doc
+            self.error = ErrorType.missing_doc
 
     def process(self):
         if self.error == ErrorType.ok:
@@ -27,22 +27,25 @@ class DocxTemplatePlaceholder:
             self.template_document.save(path)
             return Convert2PDF(path).DocxToPdf()
         else:
-            return None
+            return self.error
 
     def __process(self, doc, tags):
-        for p in doc.paragraphs:
-            inline = p.runs
-            for i in range(len(inline)):
-                # Todo кароч здесь по кусочкам условия надо ловить
-                for regex, replace in tags.items():
-                    if regex.search(inline[i].text):
-                        text = regex.sub(replace, inline[i].text)
-                        inline[i].text = text
+        try:
+            for p in doc.paragraphs:
+                inline = p.runs
+                for i in range(len(inline)):
+                    # Todo кароч здесь по кусочкам условия надо ловить
+                    for regex, replace in tags.items():
+                        if regex.search(inline[i].text):
+                            text = regex.sub(replace, inline[i].text)
+                            inline[i].text = text
 
-        for table in doc.tables:
-            for row in table.rows:
-                for cell in row.cells:
-                    self.__process(cell, tags)
+            for table in doc.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        self.__process(cell, tags)
+        except:
+            return self.error
 
     def __prepare_tags(self, tags):
         done_tags = dict()

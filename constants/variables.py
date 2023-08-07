@@ -1,3 +1,1 @@
-
-
 FILE_FOLDER = "../files"
