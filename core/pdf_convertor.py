@@ -12,7 +12,7 @@ class Convert2PDF:
         self.error = ErrorType.ok
 
     def DocxToPdf(self):
-        subprocess.call(['lowriter',
+        subprocess.call(['soffice',
                          '--headless',
                          '--convert-to',
                          'pdf',
