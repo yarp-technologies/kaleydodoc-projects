@@ -10,3 +10,10 @@ services:
       - "7777:7777"
     restart: always
 
+  soffice:
+    container_name: soffice_container
+    image: libreoffice/online
+    ports:
+      - "9980:9980"
+    restart: always
+
