@@ -5,7 +5,8 @@ services:
     container_name: pdf_convertor_python
     image: pdf_convertor_python
     volumes:
-      - "/usr/bin:/usr/bin"
+      - "/usr/bin/soffice:/usr/bin/soffice"
+      - "/usr/bin/oosplash:/usr/bin/oosplash"
     build:
       dockerfile: "docker/api/Dockerfile"
     ports:
