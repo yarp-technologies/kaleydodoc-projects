@@ -5,7 +5,7 @@ services:
     container_name: pdf_convertor_python
     image: pdf_convertor_python
     volumes:
-      - "/usr/bin/soffice:/usr/bin/soffice"
+      - "/usr/bin:/usr/bin"
     build:
       dockerfile: "docker/api/Dockerfile"
     ports:
