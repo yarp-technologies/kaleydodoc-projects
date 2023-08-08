@@ -4,11 +4,9 @@ services:
   api:
     container_name: pdf_convertor_python
     image: pdf_convertor_python
-    volumes:
-      - "/usr/bin/soffice:/usr/bin/soffice"
-      - "/usr/bin/oosplash:/usr/bin/oosplash"
     build:
       dockerfile: "docker/api/Dockerfile"
     ports:
       - "7777:7777"
     restart: always
+
