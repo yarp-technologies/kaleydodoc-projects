@@ -6,6 +6,10 @@ COPY ./requirements.txt ./req.txt
 
 COPY . .
 
+RUN apt-get install libreoffice
+
+RUN apt-get install python3-uno python3
+
 RUN apt-get update && apt-get -y install \
     unoconv \
     && rm -rf /var/lib/apt/lists/*
