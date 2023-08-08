@@ -13,13 +13,7 @@ class Convert2PDF:
         self.error = ErrorType.ok
 
     def DocxToPdf(self):
-        subprocess.Popen([
-            '/usr/bin/soffice',
-            '--headless',
-            '--convert-to',
-            '--convert-to',
-            'pdf',
-            '--outdir',
+        subprocess.run(["unoconv", "-f", "pdf", "-o",
             FILE_FOLDER,
             self.file])
         delete_path = FILE_FOLDER + '/' + self.file.split('/')[-1]
