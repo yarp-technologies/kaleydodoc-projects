@@ -16,7 +16,7 @@ class Convert2PDF:
         try:
             client = docker.from_env()
             libreoffice_container = client.containers.get("pdf_placeholder-libreoffice-1")
-            cmd = f'libreoffice ' \
+            cmd = f'soffice ' \
                   f'--headless ' \
                   f'--convert-to pdf:writer_pdf_Export ' \
                   f'--outdir ' \
