@@ -17,14 +17,14 @@ class Convert2PDF:
         print(1)
         libreoffice_container = client.containers.get("pdf_placeholder-libreoffice-1")
         print(2)
-        cmd = f"libreoffice --headless --convert-to pdf --outdir '/files' {self.file}"
+        cmd = f"libreoffice --headless --convert-to pdf --outdir /files /files/{self.file}"
         print(3)
         result = libreoffice_container.exec_run(cmd)
         print(result)
         print(4)
         delete_path = self.file
-        os.remove(delete_path)
+        # os.remove(delete_path)
         pdf_path = f"/files/{os.path.splitext(self.file)[0]}.pdf"
         return pdf_path
 
-print(Convert2PDF("test_files/typical_random_style.docx").DocxToPdf())
+print(Convert2PDF("typical_random_style.docx").DocxToPdf())
