@@ -16,6 +16,7 @@ class Convert2PDF:
         client = docker.from_env()
         print(1)
         libreoffice_container = client.containers.get("pdf_placeholder-libreoffice-1")
+        print(libreoffice_container)
         print(2)
         cmd = f"libreoffice --headless --convert-to pdf --outdir /files /files/{self.file}"
         print(3)
@@ -25,6 +26,7 @@ class Convert2PDF:
         delete_path = self.file
         # os.remove(delete_path)
         pdf_path = f"/files/{os.path.basename(self.file).split('.')[0]}.pdf"
+        print(os.path.isfile(pdf_path))
         return pdf_path
 
 print(Convert2PDF("typical_random_style.docx").DocxToPdf())
