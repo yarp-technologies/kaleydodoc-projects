@@ -27,22 +27,19 @@ class DocxTemplatePlaceholder:
         return Convert2PDF(path).DocxToPdf()
 
     def __process(self, doc, tags):
-        try:
-            for p in doc.paragraphs:
-                inline = p.runs
-                for i in range(len(inline)):
-                    # Todo кароч здесь по кусочкам условия надо ловить
-                    for regex, replace in tags.items():
-                        if regex.search(inline[i].text):
-                            text = regex.sub(replace, inline[i].text)
-                            inline[i].text = text
+        for p in doc.paragraphs:
+            inline = p.runs
+            for i in range(len(inline)):
+                # Todo кароч здесь по кусочкам условия надо ловить
+                for regex, replace in tags.items():
+                    if regex.search(inline[i].text):
+                        text = regex.sub(replace, inline[i].text)
+                        inline[i].text = text
 
-            for table in doc.tables:
-                for row in table.rows:
-                    for cell in row.cells:
-                        self.__process(cell, tags)
-        except:
-            return self.error
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    self.__process(cell, tags)
 
     def __prepare_tags(self, tags):
         done_tags = dict()

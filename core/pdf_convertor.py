@@ -31,8 +31,6 @@ class Convert2PDF:
         libreoffice_container = client.containers.get("pdf_placeholder-libreoffice-1")
         cmd = f"libreoffice --headless --convert-to pdf --outdir {FILE_FOLDER} {self.file}"
         result = libreoffice_container.exec_run(cmd)
-        delete_path = self.file
-        os.remove(delete_path)
         delete_path = FILE_FOLDER + '/' + self.file.split('/')[-1]
         os.remove(delete_path)
         pdf_path = FILE_FOLDER + '/' + self.file.split('/')[-1].split('.')[0] + '.pdf'
