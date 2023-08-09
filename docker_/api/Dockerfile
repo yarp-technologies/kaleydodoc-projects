@@ -13,5 +13,3 @@ ENV PYTHONPATH "/project"
 WORKDIR /project/app
 
 CMD ["python3", "api.py"]
-
-WORKDIR /project
