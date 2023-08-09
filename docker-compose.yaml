@@ -3,7 +3,7 @@ version: "3.9"
 services:
   libreoffice:
     image: libreoffice_container
-    command: [ "libreoffice" ]
+    command: ["libreoffice"]
     build:
       dockerfile: docker/LibreOffice/Dockerfile
     volumes:

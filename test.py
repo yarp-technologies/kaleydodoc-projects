@@ -1,28 +1,24 @@
 from docx import Document
-from weasyprint import HTML
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
-def convert_docx_to_pdf(docx_path, pdf_path):
-    try:
-        # Чтение содержимого .docx файла
-        doc = Document(docx_path)
-        paragraphs = []
-        for para in doc.paragraphs:
-            paragraphs.append(para.text)
 
-        # Сохранение содержимого во временный HTML файл
-        html_content = "<br>".join(paragraphs)
-        html_temp_file = "/tmp/temp.html"
-        with open(html_temp_file, "w", encoding="utf-8") as f:
-            f.write(html_content)
+def convert_docx_to_pdf(docx_file_path, pdf_file_path):
+    # Открываем DOCX файл
+    doc = Document(docx_file_path)
 
-        # Генерация PDF из HTML и сохранение его по указанному пути
-        HTML(string=html_content).write_pdf(pdf_path)
+    # Создаем PDF файл с помощью reportlab
+    c = canvas.Canvas(pdf_file_path, pagesize=letter)
 
-        print(f"Конвертация завершена. Результат сохранен в: {pdf_path}")
-    except Exception as e:
-        print(f"Произошла ошибка при конвертации: {e}")
+    for para in doc.paragraphs:
+        c.drawString(100, 700, para.text)
+        c.showPage()
 
-if __name__ == "__main__":
-    docx_file_path = "test_files/typical.docx"
-    pdf_file_path = "output.pdf"
-    convert_docx_to_pdf(docx_file_path, pdf_file_path)
+    c.save()
+
+
+# Укажите пути к вашим файлам
+docx_path = "test_files/typical.docx"
+pdf_path = "output.pdf"
+
+convert_docx_to_pdf(docx_path, pdf_path)
