@@ -18,6 +18,7 @@ services:
     volumes:
       - /files:/files
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /bin/sh:/bin/sh:docker
     ports:
       - "7777:7777"
     restart: always
