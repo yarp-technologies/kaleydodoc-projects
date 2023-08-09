@@ -46,20 +46,16 @@ async def dounload_filled_template(
         input_text_data: str = Form(default=None)
 ):
     file_path = save_file(input_file_data)
-    print("save")
     if file_path is None:
         result = {"request": request,
                   "msg": MISSING_FILE}
         return templates.TemplateResponse("error_msg.html", result)
     regex = prepare_regex(input_text_data)
-    print("regex")
     filler = Core(file_path, regex).process()
-    print(filler)
     file = Path(filler).name
     url = f"/file?{urlencode({'filename': file})}"
     result = {"request": request,
               "url": url}
-    print("send")
     return templates.TemplateResponse("done_template.html", result)
 
 if __name__ == "__main__":
