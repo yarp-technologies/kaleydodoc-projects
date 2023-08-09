@@ -7,7 +7,7 @@ from pathlib import Path
 from core.core_object import Core
 from constants.msg import *
 from urllib.parse import urlencode
-from adittional_modules import *
+from app.adittional_modules import *
 import json
 
 app = FastAPI()
