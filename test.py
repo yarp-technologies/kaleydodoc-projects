@@ -24,7 +24,7 @@ class Convert2PDF:
         print(4)
         delete_path = self.file
         # os.remove(delete_path)
-        pdf_path = f"/files/{os.path.splitext(self.file)[0]}.pdf"
+        pdf_path = f"/files/{os.path.basename(self.file).split('.')[0]}.pdf"
         return pdf_path
 
 print(Convert2PDF("typical_random_style.docx").DocxToPdf())
