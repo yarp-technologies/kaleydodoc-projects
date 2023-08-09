@@ -14,7 +14,7 @@ class Convert2PDF:
 
     def DocxToPdf(self):
         client = docker.from_env()
-        libreoffice_container = client.containers.get("pdf_placeholder-libreoffice-1")
+        libreoffice_container = client.images.get("libreoffice_container")
         cmd = f'soffice ' \
               f'--headless ' \
               f'--convert-to pdf:writer_pdf_Export ' \
