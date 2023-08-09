@@ -2,6 +2,7 @@ import subprocess
 import os
 from constants.variables import *
 from constants.msg import ErrorType
+import docker
 
 
 class Convert2PDF:
@@ -12,7 +13,7 @@ class Convert2PDF:
         self.error = ErrorType.ok
 
     def DocxToPdf(self):
-        subprocess.run(["docker-compose", "exec", "libreoffice", "libreoffice",
+        subprocess.run(["docker_-compose", "exec", "libreoffice", "libreoffice",
                         "--headless" "--convert-to", "pdf", "--outdir",
                          FILE_FOLDER,
                          self.file])

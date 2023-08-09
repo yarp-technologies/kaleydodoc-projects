@@ -2,6 +2,7 @@ import subprocess
 import os
 from constants.variables import *
 from constants.msg import ErrorType
+import docker
 
 
 class Convert2PDF:
@@ -12,13 +13,15 @@ class Convert2PDF:
         self.error = ErrorType.ok
 
     def DocxToPdf(self):
-        subprocess.run(["docker-compose", "exec", "libreoffice", "libreoffice",
-                        "--headless", "--convert-to", "pdf", "--outdir",
-                         FILE_FOLDER,
-                         self.file])
+        client = docker.from_env()
+        libreoffice_container = client.containers.get("pdf_placeholder-libreoffice-1")
+
+        # Запуск команды внутри контейнера LibreOffice
+        cmd = f"libreoffice --headless --convert-to pdf --outdir {FILE_FOLDER} {self.file}"
+        result = libreoffice_container.exec_run(cmd)
         delete_path = FILE_FOLDER + '/' + self.file.split('/')[-1]
         os.remove(delete_path)
-        path = FILE_FOLDER + '/' + self.file.split('/')[-1].split('.')[0] + '.pdf'
-        return path
+        pdf_path = f"/files/{os.path.splitext(self.file)[0]}.pdf"
+        return pdf_path
 
-Convert2PDF("test_files/typical_random_style.docx").DocxToPdf()
+print(Convert2PDF("test_files/typical_random_style.docx").DocxToPdf())
