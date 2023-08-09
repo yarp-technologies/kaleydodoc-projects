@@ -4,10 +4,10 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
-from core_object import Core
+from core.core_object import Core
 from constants.msg import *
 from urllib.parse import urlencode
-from app.adittional_modules import *
+from adittional_modules import *
 import json
 
 app = FastAPI()

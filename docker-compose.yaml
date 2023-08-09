@@ -5,7 +5,7 @@ services:
     image: libreoffice_container
     command: ["libreoffice"]
     build:
-      dockerfile: "docker_/LibreOffice/Dockerfile"
+      dockerfile: docker_/LibreOffice/Dockerfile
     volumes:
       - /files:/files
     restart: always
@@ -17,6 +17,7 @@ services:
       dockerfile: "docker_/api/Dockerfile"
     volumes:
       - /files:/files
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - "7777:7777"
     restart: always
