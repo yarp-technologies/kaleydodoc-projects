@@ -3,7 +3,6 @@ version: "3.9"
 services:
   libreoffice:
     image: libreoffice_container
-    command: ["libreoffice --headless"]
     build:
       dockerfile: docker_/LibreOffice/Dockerfile
     volumes:
