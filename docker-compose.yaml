@@ -4,6 +4,8 @@ services:
   libreoffice:
     image: libreoffice_container
     command: [ "libreoffice" ]
+    build:
+      docker/LibreOffice/Dockerfile
     volumes:
       - /files:/files
     restart: always
