@@ -1,5 +1,7 @@
 FROM debian:buster
 
+WORKDIR /project
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
