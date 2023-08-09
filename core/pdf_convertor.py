@@ -14,7 +14,7 @@ class Convert2PDF:
 
     def DocxToPdf(self):
         subprocess.run(["docker-compose", "exec", "libreoffice", "libreoffice",
-                        "--headless", "--convert-to", "pdf", "--outdir",
+                        "--headless" "--convert-to", "pdf", "--outdir",
                          FILE_FOLDER,
                          self.file])
         delete_path = FILE_FOLDER + '/' + self.file.split('/')[-1]
