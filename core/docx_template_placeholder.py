@@ -21,10 +21,13 @@ class DocxTemplatePlaceholder:
             self.error = ErrorType.missing_doc
 
     def process(self):
-        self.__process(self.template_document, self.replace_tags)
-        path = FILE_FOLDER + "/" + self.file_name
-        self.template_document.save(path)
-        return Convert2PDF(path).DocxToPdf()
+        try:
+            self.__process(self.template_document, self.replace_tags)
+            path = FILE_FOLDER + "/" + self.file_name
+            self.template_document.save(path)
+            return Convert2PDF(path).DocxToPdf()
+        except:
+            return ErrorType.missing_doc
 
     def __process(self, doc, tags):
         for p in doc.paragraphs:
