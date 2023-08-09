@@ -1,6 +1,5 @@
 import subprocess
 import os
-import requests
 from constants.variables import *
 from constants.msg import ErrorType
 
@@ -21,3 +20,5 @@ class Convert2PDF:
         os.remove(delete_path)
         path = FILE_FOLDER + '/' + self.file.split('/')[-1].split('.')[0] + '.pdf'
         return path
+
+Convert2PDF("test_files/typical_random_style.docx").DocxToPdf()

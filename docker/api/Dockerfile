@@ -1,8 +1,8 @@
 FROM python:3.8-slim
 
-RUN apt-get update && apt-get install -y docker-compose
-
 WORKDIR /project
+
+RUN apt-get update && apt-get install -y docker-compose
 
 COPY ./requirements.txt ./req.txt
 

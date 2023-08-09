@@ -1,6 +1,5 @@
 import subprocess
 import os
-import requests
 from constants.variables import *
 from constants.msg import ErrorType
 
