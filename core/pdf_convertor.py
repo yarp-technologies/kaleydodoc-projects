@@ -21,7 +21,7 @@ class Convert2PDF:
                   f'--convert-to pdf:writer_pdf_Export ' \
                   f'--outdir ' \
                   '"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER}" ' \
-                  f'{FILE_FOLDER} ' \
+                  f'project/files ' \
                   f'{self.file}'
             result = libreoffice_container.exec_run(cmd)
             delete_path = FILE_FOLDER + '/' + self.file.split('/')[-1]
