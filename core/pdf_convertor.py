@@ -18,9 +18,9 @@ class Convert2PDF:
             libreoffice_container = client.containers.get("pdf_placeholder-libreoffice-1")
             cmd = f'soffice ' \
                   f'--headless ' \
-                  f'--convert-to pdf:writer_pdf_Export ' \
-                  f'--outdir ' \
+                  f'--convert-to pdf ' \
                   '"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER}" ' \
+                  f'--outdir ' \
                   f'/project/files ' \
                   f'{self.file.replace("..", "/project")}'
             result = libreoffice_container.exec_run(cmd)
