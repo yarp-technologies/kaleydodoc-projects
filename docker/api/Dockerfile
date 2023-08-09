@@ -6,9 +6,6 @@ COPY ./requirements.txt ./req.txt
 
 COPY . .
 
-RUN apt-get update && \
-    apt-get install -y unoconv libreoffice
-
 RUN pip3 install -r req.txt
 
 ENV PYTHONPATH "/project"
