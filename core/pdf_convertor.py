@@ -29,4 +29,4 @@ class Convert2PDF:
             pdf_path = FILE_FOLDER + '/' + self.file.split('/')[-1].split('.')[0] + '.pdf'
             return pdf_path
         except:
-            return ErrorType.no_correct_doc
+            return ErrorType.no_correct_doc.replace("..", "/project")
