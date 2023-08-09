@@ -3,7 +3,7 @@ from docx import Document
 from typing import Dict
 from constants.variables import *
 from constants.msg import ErrorType
-from .pdf_convertor import Convert2PDF
+from pdf_convertor import Convert2PDF
 
 
 class DocxTemplatePlaceholder:

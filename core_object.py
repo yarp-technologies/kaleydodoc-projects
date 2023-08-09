@@ -1,5 +1,5 @@
 from typing import Dict, Any
-from .docx_template_placeholder import DocxTemplatePlaceholder
+from docx_template_placeholder import DocxTemplatePlaceholder
 
 
 class Core:
