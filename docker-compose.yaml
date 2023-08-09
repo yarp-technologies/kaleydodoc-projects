@@ -14,7 +14,7 @@ services:
     container_name: pdf_convertor_python
     image: pdf_convertor_python
     working_dir: /project
-    command: python3 api.py
+    command: python3 app/api.py
     build:
       dockerfile: "docker_/api/Dockerfile"
     volumes:

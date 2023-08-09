@@ -13,3 +13,4 @@ RUN pip3 install -r req.txt
 ENV PYTHONPATH "/project"
 
 WORKDIR /project
+CMD ["python3", "api.py"]
