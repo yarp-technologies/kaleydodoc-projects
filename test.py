@@ -18,7 +18,7 @@ class Convert2PDF:
         libreoffice_container = client.containers.get("pdf_placeholder-libreoffice-1")
         print(libreoffice_container)
         print(2)
-        cmd = f"libreoffice --headless --convert-to pdf --outdir /files /files/{self.file}"
+        cmd = f"soffice --headless --convert-to pdf --outdir /files /files/{self.file}"
         print(3)
         result = libreoffice_container.exec_run(cmd)
         print(result)
