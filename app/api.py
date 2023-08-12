@@ -52,10 +52,6 @@ async def dounload_filled_template(
         return templates.TemplateResponse("error_msg.html", result)
     regex = prepare_regex(input_text_data)
     filler = Core(file_path, regex).process()
-    if filler != ErrorType.ok:
-        result = {"request": request,
-                  "msg": MISSING_FILE + " " + str(filler)}
-        return templates.TemplateResponse("error_msg.html", result)
     file = Path(filler).name
     url = f"/file?{urlencode({'filename': file})}"
     result = {"request": request,
