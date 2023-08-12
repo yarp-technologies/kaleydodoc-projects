@@ -6,6 +6,8 @@ services:
     image: pdf_convertor_python
     build:
       dockerfile: "docker_/api/Dockerfile"
+    volumes:
+      - ./files:/files
     ports:
       - "7777:7777"
     restart: always
