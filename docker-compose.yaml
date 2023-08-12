@@ -7,7 +7,7 @@ services:
     build:
       dockerfile: "docker_/api/Dockerfile"
     volumes:
-      - /files:/files
+      - ./files:/files
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /bin/sh:/bin/sh:docker
     ports:
