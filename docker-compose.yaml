@@ -1,19 +1,9 @@
 version: "3.9"
 
 services:
-  libreoffice:
-    image: libreoffice_container
-    build:
-      dockerfile: docker_/LibreOffice/Dockerfile
-    volumes:
-      - /files:/files
-    restart: always
-
   api:
     container_name: pdf_convertor_python
     image: pdf_convertor_python
-    # working_dir: /project
-    # command: python3 app/api.py
     build:
       dockerfile: "docker_/api/Dockerfile"
     volumes:
