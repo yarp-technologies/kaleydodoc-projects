@@ -1,6 +1,6 @@
 FROM python:3.8-slim
 
-WORKDIR /project
+WORKDIR /
 
 RUN echo deb http://httpredir.debian.org/debian/ buster main contrib non-free >> /etc/apt/sources.list \
     && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections \
@@ -20,8 +20,8 @@ COPY . .
 
 RUN pip3 install -r req.txt
 
-ENV PYTHONPATH "/project"
+ENV PYTHONPATH "/"
 
-WORKDIR /project/app
+WORKDIR /app
 
 CMD ["python3", "api.py"]
