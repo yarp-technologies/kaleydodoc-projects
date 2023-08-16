@@ -1,7 +1,7 @@
 from uvicorn import Config, Server
 import asyncio
-from fastapi import FastAPI, Request, Form
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi import FastAPI, Request, Form, Response
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 from core.core_object import Core
@@ -13,6 +13,14 @@ import json
 app = FastAPI()
 
 templates = Jinja2Templates(directory="../templates")
+
+
+temp_user_host = {
+    "user1": []
+}
+
+temp_file_host = {
+}
 
 
 @app.get("/")
@@ -38,9 +46,41 @@ async def convert_file(file: UploadFile = File(None), tags: str = Form(None)):
     file = Path(filler).name
     return FileResponse(os.path.join(FILE_FOLDER, file), filename=file)
 
+@app.post("/verification")
+async def file_key(file: UploadFile = File(None), id_user: str = Form(None)):
+    result = {
+        "msg": "ok"
+    }
+    if temp_user_host.get(id_user) is not None:
+        file_path = save_file(file)
+        if file_path is None:
+            result["msg"] = NOT_FOUND_USER
+            return Response(content=result, media_type="application/json")
+        temp_user_host[id_user].append(file_path)
+        id_file = os.path.basename(file_path).split("_")[0]
+        temp_file_host[id_file] = file_path
+        tags = get_tags(file_path)
+        result["id_file"] = id_file
+        result["tags"] = tags
+        return JSONResponse(content=result)
+    else:
+        result["msg"] = NOT_FOUND_USER
+        return JSONResponse(content=result)
+
+@app.post("/placeholder", response_class=FileResponse)
+async def get_body(request: Request):
+    data = await request.json()
+    data_dict = json.loads(data)
+    file_path = temp_file_host[data_dict["id_file"]]
+    tags = data_dict["tags"]
+    filler = Core(file_path, tags).process()
+    if filler is None:
+        return None
+    file = Path(filler).name
+    return FileResponse(os.path.join(FILE_FOLDER, file), filename=file)
 
 @app.post("/template", response_class=HTMLResponse)
-async def dounload_filled_template(
+async def download_filled_template(
         request: Request,
         input_file_data: UploadFile = File(default=None),
         input_text_data: str = Form(default=None)

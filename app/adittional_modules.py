@@ -3,14 +3,40 @@ import os
 import uuid
 from constants.variables import *
 from fastapi import UploadFile, File
+from docx import Document
+import re
 
 
-def save_file(input_file_data: UploadFile = File(None)):
-    filename = str(uuid.uuid4())[:8] + '_' + input_file_data.filename
-    path = os.path.join(FILE_FOLDER, filename)
-    with open(f'{path}', "wb") as buffer:
-        shutil.copyfileobj(input_file_data.file, buffer)
-    return path
+def save_file(input_file_data: UploadFile = File(...)):
+    try:
+        filename = str(uuid.uuid4())[:8] + '_' + input_file_data.filename
+        path = os.path.join(FILE_FOLDER, filename)
+        with open(f'{path}', "wb") as buffer:
+            shutil.copyfileobj(input_file_data.file, buffer)
+        return path
+    except:
+        return None
+
+def get_tags(file_path: str):
+    tags = {}
+    pattern = r"<<(.*?)>>"
+    def process(doc):
+        for p in doc.paragraphs:
+            inline = p.runs
+            for i in range(len(inline)):
+                text = inline[i].text
+                matches = re.findall(pattern, text)
+                for match in matches:
+                    tags[match] = ""
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    process(cell)
+
+    doc = Document(file_path)
+    process(doc)
+    return tags
+
 
 def prepare_regex(text):
     regex = {}

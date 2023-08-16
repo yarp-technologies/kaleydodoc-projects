@@ -1,14 +1,17 @@
-import sys
-import os
-import comtypes.client
+import requests
+import json
 
-wdFormatPDF = 17
+file = {'file': open("./test_files/typical.docx", 'rb')}
 
-in_file = os.path.abspath("test_files/typical.docx")
-out_file = os.path.abspath("out.pdf")
+tags = {"Browser": "Gooogle",
+         "Version": "0.0.0.0.1",
+         "IP": "0.0.0.127",
+         "Location": "Russia",
+         "Created": "Konstantine"}
 
-word = comtypes.client.CreateObject('Word.Application')
-doc = word.Documents.Open(in_file)
-doc.SaveAs(out_file, FileFormat=wdFormatPDF)
-doc.Close()
-word.Quit()
+data = {"tags": json.dumps(tags)}
+
+res = requests.post("http://81.200.156.178:7777/api_module", files=file, data=data)
+
+with open("out_files/out.pdf", "wb") as code:
+    code.write(res.content)

@@ -14,7 +14,7 @@ class Convert2PDF:
 
     def DocxToPdf(self):
         subprocess.call(['/usr/bin/soffice', '--headless', '--convert-to', 'pdf', '--outdir', FILE_FOLDER, self.file])
-        delete_path = FILE_FOLDER + '/' + self.file.split('/')[-1]
-        os.remove(delete_path)
+        # delete_path = FILE_FOLDER + '/' + self.file.split('/')[-1]
+        # os.remove(delete_path)
         path = FILE_FOLDER + '/' + self.file.split('/')[-1].split('.')[0] + '.pdf'
         return path
