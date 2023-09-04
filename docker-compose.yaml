@@ -5,10 +5,28 @@ services:
     container_name: pdf_convertor_python
     image: pdf_convertor_python
     build:
-      dockerfile: "docker_/api/Dockerfile"
+      dockerfile: "docker/api/Dockerfile"
     volumes:
       - ./files:/files
     ports:
       - "7777:7777"
     restart: always
+    depends_on:
+      - mongodb
+    networks:
+      - my-network
+
+    mongodb:
+      image: mongo
+      container_name: mongodb
+      ports:
+        - "27017:27017"
+      volumes:
+        - mongodb_data:/data/db
+  networks:
+    my-network:
+      driver: bridge
+
+  volumes:
+    mongodb_data:
 

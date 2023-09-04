@@ -5,6 +5,7 @@ from constants.variables import *
 from fastapi import UploadFile, File
 from docx import Document
 import re
+import asyncio
 
 
 def save_file(input_file_data: UploadFile = File(...)):
@@ -35,7 +36,7 @@ def get_tags(file_path: str):
 
     doc = Document(file_path)
     process(doc)
-    return tags
+    return list(set(tags))
 
 def dict_tags(tags):
     tag = {}
@@ -43,13 +44,7 @@ def dict_tags(tags):
         tag[i] = ""
     return tag
 
-def prepare_regex(text):
-    regex = {}
-    if text is None:
-        return regex
-    reg = text.split("\r\n")
-    for tag in reg:
-        if tag.find(":") != -1:
-            value = tag.replace(" ", "").split(":")
-            regex[value[0]] = value[1]
-    return regex
+def transform_user(old: dict, new: dict):
+    old.update(new)
+    return old
+

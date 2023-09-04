@@ -1,5 +1,4 @@
 MISSING_FILE = "Файл отстутствует"
-
 NOT_FOUND_USER = "Пользователь не найден"
 
 class ErrorType:
