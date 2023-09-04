@@ -1,6 +1,16 @@
 version: "3.9"
 
 services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - my-network
+
   api:
     container_name: pdf_convertor_python
     image: pdf_convertor_python
@@ -16,20 +26,10 @@ services:
     networks:
       - my-network
 
-  mongodb:
-    image: mongo
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - my-network
+networks:
+  my-network:
+    driver: bridge
 
-  networks:
-    my-network:
-      driver: bridge
-
-  volumes:
-    mongodb_data:
+volumes:
+  mongodb_data:
 
