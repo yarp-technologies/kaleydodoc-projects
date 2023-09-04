@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-python-multipart
-Jinja2
-requests
-python-docx
-python-jose
-passlib[bcrypt]
