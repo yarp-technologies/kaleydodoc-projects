@@ -2,12 +2,9 @@ import motor.motor_asyncio
 
 class DBManager:
     def __init__(self, database_name, collection_name):
-        self.client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://localhost:27017")
-        print(self.client)
+        self.client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://mongodb:27017")
         self.database = self.client[database_name]
-        print(self.database)
         self.collection = self.database[collection_name]
-        print(self.collection)
 
     async def find_by_nickname(self, nickname):
         user = await self.collection.find_one({'nickname': nickname})
