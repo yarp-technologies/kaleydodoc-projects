@@ -16,13 +16,14 @@ services:
     networks:
       - my-network
 
-    mongodb:
-      image: mongo
-      container_name: mongodb
-      ports:
-        - "27017:27017"
-      volumes:
-        - mongodb_data:/data/db
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
   networks:
     my-network:
       driver: bridge
