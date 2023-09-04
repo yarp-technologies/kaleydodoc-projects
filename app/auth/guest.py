@@ -26,13 +26,10 @@ async def sign_up(
         email: str = Form(...),
         password: str = Form(...)
 ):
-    print("signuppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp")
     if await database.find_by_nickname(nickname):
-        print("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
         return templates.TemplateResponse("sign_up.html",
                                           {"request": request, "msg": "Пользователь уже существует"})
     else:
-        print("anotherrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
         user = {
             "name": name,
             "nickname": nickname,
