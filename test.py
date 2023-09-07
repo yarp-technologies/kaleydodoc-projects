@@ -1,5 +1,7 @@
 import requests
 
+
+# получение access_token
 url = "http://0.0.0.0:7777/api/access_token"
 username = "murder"
 password = "12345"
@@ -8,36 +10,20 @@ data = {
         "password": password
     }
 res = requests.post(f'{url}', data=data)
-data = res.json()
-print(res.status_code)
+token = res.json()
 
-
+# получение тэгов на заполнение (не обязательно)
 url = "http://0.0.0.0:7777/api_user/placeholder_items"
-headers = {"Authorization": f"{data['token_type']} {data['access_token']}"}
+headers = {"Authorization": f"{token['token_type']} {token['access_token']}"}
 files = {"file": open("test_files/typical_random_style.docx", "rb")}
 res = requests.post(url, files=files, headers=headers)
-tags = res.json()
-
-print(res.status_code)
-
-url = "http://0.0.0.0:7777/api/access_token"
-username = "murder"
-password = "12345"
-data = {
-        "username": username,
-        "password": password
-    }
-res = requests.post(f'{url}', data=data)
 data = res.json()
-print(res.status_code)
+data['filename'] = "typical_random_style.docx"
 
-tags['filename'] = "typical_random_style.docx"
-headers = {
-    "Authorization": f"{data['token_type']} {data['access_token']}",
-    'Content-Type': 'application/json'
-}
-
+# заполнение и коныертация
 url = "http://0.0.0.0:7777/api_user/placeholder_process"
-res = requests.post(url, data={"data": tags}, headers=headers)
+res = requests.post(url, json=data, headers=headers)
+with open('out_test_files/out.pdf', 'wb') as file:
+    file.write(res.content)
 print(res.status_code)
 

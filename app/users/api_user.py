@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
+from typing import Dict
 from app.dependencies.oauth2_api import *
 from app.modules.user_modules import *
 from core.core_object import Core
@@ -26,7 +27,7 @@ async def upload_docx(current_user: Annotated[dict, Depends(get_current_user_api
     return JSONResponse(content=dict_tags(tags))
 
 @router.post("/placeholder_process", response_class=FileResponse)
-async def process_data(data: dict, current_user: Annotated[dict, Depends(get_current_user_api)]):
+async def process_data(data: Dict[str, str], current_user: Annotated[dict, Depends(get_current_user_api)]):
     filename = data.get("filename")
     del data["filename"]
     username = current_user["nickname"]
