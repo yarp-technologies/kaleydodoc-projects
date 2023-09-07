@@ -1,33 +1,32 @@
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
-from urllib.parse import urlencode
-from app.dependencies.oauth2 import *
+from app.dependencies.oauth2_api import *
 from app.modules.user_modules import *
 from core.core_object import Core
 
 router = APIRouter(
-    prefix="/user",
-    tags=["user"],
-    dependencies=[Depends(get_current_user)]
+    prefix="/api_user",
+    tags=["api_user"],
+    dependencies=[Depends(get_current_user_api)],
+    responses={"404": {"msg": "Credentials exception"}}
 )
 
 database = DBManager("PDF_placeholder", "users")
-templates = Jinja2Templates(directory="../templates")
 
-@router.post("/tags")
-async def upload_docx(current_user: Annotated[dict, Depends(get_current_user)], file: UploadFile = File(...)):
+@router.post("/placeholder_items")
+async def upload_docx(current_user: Annotated[dict, Depends(get_current_user_api)], file: UploadFile = File(...)):
     file_path = save_file(file)
     tags = get_tags(file_path)
     await database.update_field_by_nickname(current_user["nickname"],
                                             "files_docx",
                                             {file.filename: file_path},
                                             transform_user)
-    return JSONResponse(content=tags)
+    return JSONResponse(content=dict_tags(tags))
 
-@router.post("/placeholder_process", response_class=HTMLResponse)
-async def process_data(data: dict, current_user: Annotated[dict, Depends(get_current_user)]):
+@router.post("/placeholder_process", response_class=FileResponse)
+async def process_data(data: dict, current_user: Annotated[dict, Depends(get_current_user_api)]):
     filename = data.get("filename")
     del data["filename"]
     username = current_user["nickname"]
@@ -39,7 +38,5 @@ async def process_data(data: dict, current_user: Annotated[dict, Depends(get_cur
                                             "files_pdf",
                                             {"_".join(file.split("_")[1::]): filler},
                                             transform_user)
-    url = f"/link/file?{urlencode({'filename': file})}"
-    result = {"url": url}
-    return JSONResponse(content=result)
+    return FileResponse(filler, filename=filename)
 

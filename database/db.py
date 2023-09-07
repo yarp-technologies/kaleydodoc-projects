@@ -2,7 +2,9 @@ import motor.motor_asyncio
 
 class DBManager:
     def __init__(self, database_name, collection_name):
-        self.client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://mongodb:27017")
+        # server db URL: "mongodb://mongodb:27017"
+        # test db URL: "mongodb://localhost:27017"
+        self.client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://localhost:27017")
         self.database = self.client[database_name]
         self.collection = self.database[collection_name]
 

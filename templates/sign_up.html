@@ -8,7 +8,7 @@
 <h1>Регистрация</h1>
     <form method="post" action="/auth/signup">
         {% if msg %}
-            <p>{{ msg }}</p>
+            <font color="red">{{ msg }}</font><br>
         {% endif %}
         <label for="name">Имя:</label><br>
         <input type="text" id="name" name="name" required><br>

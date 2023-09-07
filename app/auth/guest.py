@@ -53,13 +53,11 @@ async def sign_in(
         nickname: str = Form(...),
         password: str = Form(...)
 ):
-    user = authenticate_user(nickname, password)
+    user = await authenticate_user(nickname, password)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        return templates.TemplateResponse("sign_in.html",
+                                          {"request": request, "msg": "Неверный никнейм или пароль."
+                                                                      " Зaрегистрируйтесь или перепроверьте данные!!!"})
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": nickname}, expires_delta=access_token_expires
@@ -71,21 +69,3 @@ async def sign_in(
     }
     return templates.TemplateResponse("pdf_placeholder.html", result)
 
-
-@router.post("/api_signin")
-async def sign_in(
-        username: str,
-        password: str
-):
-    users = authenticate_user(username, password)
-    if not users:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": username}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "Bearer"}
