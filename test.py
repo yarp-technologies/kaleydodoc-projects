@@ -3,8 +3,7 @@ import json
 
 
 # регистрация через апи
-# url = "http://81.200.156.178:7777/api/signup"
-url = "http://0.0.0.0:7777/api/signup"
+url = "http://81.200.156.178:7777/api/signup"
 data = {
     "name": "Nik",
     "username": "redrum",
