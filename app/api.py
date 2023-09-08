@@ -3,6 +3,7 @@ import asyncio
 from fastapi import Depends, FastAPI, HTTPException, status, Request
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
+from documentation import *
 from auth import guest
 from auth import api_guest
 from users import user
@@ -10,7 +11,11 @@ from users import api_user
 from links import link
 
 
-app = FastAPI()
+app = FastAPI(
+    title=PDF_DOCUMENTATION.TITLE,
+    version=PDF_DOCUMENTATION.VERSION,
+    openapi_tags=PDF_DOCUMENTATION.tags_metadata
+)
 
 templates = Jinja2Templates(directory="../templates")
 

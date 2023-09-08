@@ -18,6 +18,13 @@ database = DBManager("PDF_placeholder", "users")
 
 @router.post("/placeholder_items")
 async def upload_docx(current_user: Annotated[dict, Depends(get_current_user_api)], file: UploadFile = File(...)):
+    '''
+    Get API user file's placeholder items
+    :param current_user: include received access token in headers in request
+    (example: headers = {"Authorization": "Bearer your_access_token"})(required)
+    :param file: template file (necessarily .docs)(required)
+    :return: dictionary of placeholder items in json
+    '''
     file_path = save_file(file)
     tags = get_tags(file_path)
     await database.update_field_by_nickname(current_user["nickname"],
@@ -28,6 +35,14 @@ async def upload_docx(current_user: Annotated[dict, Depends(get_current_user_api
 
 @router.post("/placeholder_process", response_class=FileResponse)
 async def process_data(data: Dict[str, str], current_user: Annotated[dict, Depends(get_current_user_api)]):
+    '''
+    Process API user file with filled placeholder items
+    :param data: filled dictionary of placeholder items in json with included filename
+    (example: data = {..., "filename": "file.docx"})
+    :param current_user: include received access token in headers in request
+    (example: headers = {"Authorization": "Bearer your_access_token"})(required)
+    :return: file (.pdf)
+    '''
     filename = data.get("filename")
     del data["filename"]
     username = current_user["nickname"]
