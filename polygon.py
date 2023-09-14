@@ -1,10 +1,6 @@
 import requests
 import json
 
-# Todo: web добавить
-# Todo: авторизация
-# Todo: пересылка файлов
-
 
 file = {'file': open("test_files/typical.docx", 'rb')}
 

@@ -18,7 +18,7 @@ templates = Jinja2Templates(directory="../templates")
 
 @router.post("/tags")
 async def upload_docx(current_user: Annotated[dict, Depends(get_current_user)], file: UploadFile = File(...)):
-    file_path = save_file(file)
+    file_path = save_file(current_user["nickname"], file)
     tags = get_tags(file_path)
     await database.update_field_by_nickname(current_user["nickname"],
                                             "files_docx",
@@ -33,13 +33,13 @@ async def process_data(data: dict, current_user: Annotated[dict, Depends(get_cur
     username = current_user["nickname"]
     file_path = await database.find_by_nickname(username)
     file_path = file_path["files_docx"][filename]
-    filler = Core(file_path, data).process()
+    filler = Core(current_user["nickname"], file_path, data).process()
     file = Path(filler).name
     await database.update_field_by_nickname(current_user["nickname"],
                                             "files_pdf",
                                             {"_".join(file.split("_")[1::]): filler},
                                             transform_user)
-    url = f"/link/file?{urlencode({'filename': file})}"
+    url = f"/link/file?{urlencode({'filename': file, 'username': current_user['nickname']})}"
     result = {"url": url}
     return JSONResponse(content=result)
 

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Form
 from app.dependencies.oauth2 import *
 from fastapi.security import OAuth2PasswordRequestForm
+from app.modules.user_directories import *
 
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -38,6 +39,7 @@ async def sign_up(
             "files_pdf": {}
         }
         await database.add_user(user)
+        create_user(username)
         return {"msg": "You're registered"}
 
 @router.post("/access_token")

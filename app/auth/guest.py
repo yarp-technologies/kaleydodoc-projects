@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from app.dependencies.oauth2 import *
+from app.modules.user_directories import *
 
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -39,9 +40,9 @@ async def sign_up(
             "files_pdf": {}
         }
         await database.add_user(user)
+        flag = create_user(nickname)
+        print(flag)
         return templates.TemplateResponse("sign_in.html", {"request": request})
-
-#Todo: версия с oauth2, jwt и с хэшированием паролей
 
 @router.get("/signin", response_class=HTMLResponse)
 async def sign_in(request: Request):

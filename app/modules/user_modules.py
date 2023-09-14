@@ -8,10 +8,10 @@ import re
 import asyncio
 
 
-def save_file(input_file_data: UploadFile = File(...)):
+def save_file(username: str, input_file_data: UploadFile = File(...)):
     try:
         filename = str(uuid.uuid4())[:8] + '_' + input_file_data.filename
-        path = os.path.join(FILE_FOLDER, filename)
+        path = os.path.join(FILE_FOLDER + username, filename)
         with open(f'{path}', "wb") as buffer:
             shutil.copyfileobj(input_file_data.file, buffer)
         return path

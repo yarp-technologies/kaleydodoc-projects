@@ -8,6 +8,6 @@ router = APIRouter(
 )
 
 @router.get("/file", response_class=FileResponse)
-async def download_file(filename: str):
-    file_path = os.path.join(FILE_FOLDER, filename)
+async def download_file(filename: str, username: str):
+    file_path = os.path.join(FILE_FOLDER + username, filename)
     return FileResponse(file_path, filename=filename)

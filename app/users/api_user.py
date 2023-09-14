@@ -25,7 +25,7 @@ async def upload_docx(current_user: Annotated[dict, Depends(get_current_user_api
     :param file: template file (necessarily .docs)(required)
     :return: dictionary of placeholder items in json
     '''
-    file_path = save_file(file)
+    file_path = save_file(current_user["nickname"], file)
     tags = get_tags(file_path)
     await database.update_field_by_nickname(current_user["nickname"],
                                             "files_docx",
@@ -48,7 +48,7 @@ async def process_data(data: Dict[str, str], current_user: Annotated[dict, Depen
     username = current_user["nickname"]
     file_path = await database.find_by_nickname(username)
     file_path = file_path["files_docx"][filename]
-    filler = Core(file_path, data).process()
+    filler = Core(current_user["nickname"], file_path, data).process()
     file = Path(filler).name
     await database.update_field_by_nickname(current_user["nickname"],
                                             "files_pdf",
