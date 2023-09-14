@@ -4,6 +4,8 @@ import json
 # Todo: выгрузка бинарника
 # Todo: выгрузка ссылка
 
+# server url: http://81.200.156.178:7777
+# host url: http://0.0.0.0:7777
 
 # регистрация через апи
 url = "http://81.200.156.178:7777/api/signup"
@@ -45,10 +47,17 @@ data["Created"] = "Konstantine"
 
 
 # заполнение и конвертация
+url = "http://81.200.156.178:7777/api_user/placeholder_link_process"
+res = requests.post(url, json=data, headers=headers)
+print(res.json())
+
+
+# заполнение и конвертация
 url = "http://81.200.156.178:7777/api_user/placeholder_process"
 res = requests.post(url, json=data, headers=headers)
 
 with open('out_test_files/out.pdf', 'wb') as file:
     file.write(res.content)
 print(res.status_code)
+
 

@@ -6,6 +6,7 @@ from typing import Dict
 from app.dependencies.oauth2_api import *
 from app.modules.user_modules import *
 from core.core_object import Core
+from urllib.parse import urlencode
 
 router = APIRouter(
     prefix="/api_user",
@@ -55,4 +56,23 @@ async def process_data(data: Dict[str, str], current_user: Annotated[dict, Depen
                                             {"_".join(file.split("_")[1::]): filler},
                                             transform_user)
     return FileResponse(filler, filename=filename)
+
+@router.post("/placeholder_link_process")
+async def process_data(data: dict, current_user: Annotated[dict, Depends(get_current_user_api)]):
+    filename = data.get("filename")
+    del data["filename"]
+    username = current_user["nickname"]
+    file_path = await database.find_by_nickname(username)
+    file_path = file_path["files_docx"][filename]
+    filler = Core(current_user["nickname"], file_path, data).process()
+    file = Path(filler).name
+    await database.update_field_by_nickname(current_user["nickname"],
+                                            "files_pdf",
+                                            {"_".join(file.split("_")[1::]): filler},
+                                            transform_user)
+    # server url: http://81.200.156.178:7777
+    # host url: http://0.0.0.0:7777
+    url = f"http://0.0.0.0:7777/link/file?{urlencode({'filename': file, 'username': current_user['nickname']})}"
+    result = {"url": url}
+    return JSONResponse(content=result)
 
