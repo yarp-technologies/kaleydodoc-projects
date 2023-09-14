@@ -72,7 +72,7 @@ async def process_data(data: dict, current_user: Annotated[dict, Depends(get_cur
                                             transform_user)
     # server url: http://81.200.156.178:7777
     # host url: http://0.0.0.0:7777
-    url = f"http://0.0.0.0:7777/link/file?{urlencode({'filename': file, 'username': current_user['nickname']})}"
+    url = f"http://81.200.156.178:7777/link/file?{urlencode({'filename': file, 'username': current_user['nickname']})}"
     result = {"url": url}
     return JSONResponse(content=result)
 
