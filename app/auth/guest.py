@@ -30,6 +30,9 @@ async def sign_up(
     if await database.find_by_nickname(nickname):
         return templates.TemplateResponse("sign_up.html",
                                           {"request": request, "msg": "Пользователь уже существует"})
+    elif await database.find_by({"email": email}):
+        return templates.TemplateResponse("sign_up.html",
+                                          {"request": request, "msg": "Пользователь с такой почтой уже зарегистрирован"})
     else:
         user = {
             "name": name,

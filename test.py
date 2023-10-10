@@ -1,60 +1,62 @@
 import requests
 import json
 
-# Todo: выгрузка бинарника
-# Todo: выгрузка ссылка
+# Todo: Потоковая отдача файлов
 
 # server url: http://81.200.156.178:7777
 # host url: http://0.0.0.0:7777
 
 # регистрация через апи
-url = "http://81.200.156.178:7777/api/signup"
+url = "http://0.0.0.0:7777/api/signup"
 data = {
     "name": "Nik",
-    "username": "redrum",
+    "username": "murder",
     "email": "nik@mail.ru",
     "password": "12345"
 }
 res = requests.post(url, data=data)
 print(res.json())
+print(res.status_code)
 
-# получение access_token
-url = "http://81.200.156.178:7777/api/access_token"
-username = "redrum"
+# получение access token
+url = "http://0.0.0.0:7777/api/access_token"
+username = "murder"
 password = "12345"
 data = {
         "username": username,
         "password": password
     }
-res = requests.post(f'{url}', data=data)
+res = requests.post(url, data=data)
 token = res.json()
 print(token)
 
 
 # получение тэгов на заполнение (не обязательно)
-url = "http://81.200.156.178:7777/api_user/placeholder_items"
+url = "http://0.0.0.0:7777/api_user/placeholder_items"
 headers = {"Authorization": f"{token['token_type']} {token['access_token']}"}
-files = {"file": open("test_files/typical_random_style.docx", "rb")}
+files = {"file": open("test_files/pdf_test.docx", "rb")}
 res = requests.post(url, files=files, headers=headers)
 data = res.json()
 print(data)
-data['filename'] = "typical_random_style.docx"
-data["Browser"] = "Gooogle"
-data["Version"] = "0.0.0.0.1"
-data["IP"] = "0.0.0.127"
-data["Location"] = "Russia"
-data["Created"] = "Konstantine"
+
+# data["Browser"] = "Gooogle"
+# data["Version"] = "0.0.0.0.1"
+# data["IP"] = "0.0.0.127"
+# data["Location"] = "Russia"
+# data["Created"] = "Konstantine"
+
+filename = {"filename": "pdf_test.docx"}
 
 
-# заполнение и конвертация
-url = "http://81.200.156.178:7777/api_user/placeholder_link_process"
-res = requests.post(url, json=data, headers=headers)
+# заполнение и конвертация (возврат через ссылку)
+url = "http://0.0.0.0:7777/api_user/placeholder_link_process"
+res = requests.post(url, params=filename, json=data, headers=headers)
 print(res.json())
 
 
-# заполнение и конвертация
-url = "http://81.200.156.178:7777/api_user/placeholder_process"
-res = requests.post(url, json=data, headers=headers)
+# заполнение и конвертация (возврат через бинарник)
+url = "http://0.0.0.0:7777/api_user/placeholder_process"
+res = requests.post(url, params=filename, json=data, headers=headers)
 
 with open('out_test_files/out.pdf', 'wb') as file:
     file.write(res.content)

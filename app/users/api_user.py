@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, FileResponse
-from fastapi.templating import Jinja2Templates
 from pathlib import Path
 from typing import Dict
 from app.dependencies.oauth2_api import *
@@ -35,17 +34,15 @@ async def upload_docx(current_user: Annotated[dict, Depends(get_current_user_api
     return JSONResponse(content=dict_tags(tags))
 
 @router.post("/placeholder_process", response_class=FileResponse)
-async def process_data(data: Dict[str, str], current_user: Annotated[dict, Depends(get_current_user_api)]):
+async def process_data(filename: str, data: Dict[str, str], current_user: Annotated[dict, Depends(get_current_user_api)]):
     '''
     Process API user file with filled placeholder items
-    :param data: filled dictionary of placeholder items in json with included filename
-    (example: data = {..., "filename": "file.docx"})
+    :param filename: transformed file's name
+    :param data: filled dictionary of placeholder items in json
     :param current_user: include received access token in headers in request
     (example: headers = {"Authorization": "Bearer your_access_token"})(required)
     :return: file (.pdf)
     '''
-    filename = data.get("filename")
-    del data["filename"]
     username = current_user["nickname"]
     file_path = await database.find_by_nickname(username)
     file_path = file_path["files_docx"][filename]
@@ -58,9 +55,15 @@ async def process_data(data: Dict[str, str], current_user: Annotated[dict, Depen
     return FileResponse(filler, filename=filename)
 
 @router.post("/placeholder_link_process")
-async def process_data(data: dict, current_user: Annotated[dict, Depends(get_current_user_api)]):
-    filename = data.get("filename")
-    del data["filename"]
+async def process_data(filename: str, data: Dict[str, str], current_user: Annotated[dict, Depends(get_current_user_api)]):
+    '''
+    Process API user file with filled placeholder items
+    :param filename: transformed file's name
+    :param data: filled dictionary of placeholder items in json
+    :param current_user: include received access token in headers in request
+    (example: headers = {"Authorization": "Bearer your_access_token"})(required)
+    :return: link to file (.pdf)
+    '''
     username = current_user["nickname"]
     file_path = await database.find_by_nickname(username)
     file_path = file_path["files_docx"][filename]

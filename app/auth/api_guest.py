@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Form
+from fastapi.responses import Response
 from app.dependencies.oauth2 import *
 from fastapi.security import OAuth2PasswordRequestForm
 from app.modules.user_directories import *
@@ -14,6 +15,7 @@ database = DBManager("PDF_placeholder", "users")
 
 @router.post("/signup")
 async def sign_up(
+        response: Response,
         name: str = Form(...),
         username: str = Form(...),
         email: str = Form(...),
@@ -27,8 +29,13 @@ async def sign_up(
     :param password: insert password (example: 12345) (required)
     :return: response registration (example: {"msg": "You're registered"})
     '''
+    response.status_code = 201
     if await database.find_by_nickname(username):
+        response.status_code = 208
         return {"msg": "You're already registered"}
+    elif await database.find_by({"email": email}):
+        response.status_code = 401
+        return {"msg": "This email is used by another user"}
     else:
         user = {
             "name": name,
