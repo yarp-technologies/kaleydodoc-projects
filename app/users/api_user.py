@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict
 from app.dependencies.oauth2_api import *
 from app.modules.user_modules import *
+from app.config import *
 from core.core_object import Core
 from urllib.parse import urlencode
 
@@ -75,7 +76,7 @@ async def process_data(filename: str, data: Dict[str, str], current_user: Annota
                                             transform_user)
     # server url: http://81.200.156.178:7777
     # host url: http://0.0.0.0:7777
-    url = f"http://81.200.156.178:7777/link/file?{urlencode({'filename': file, 'username': current_user['nickname']})}"
+    url = f"{SERVER_URL}/link/file?{urlencode({'filename': file, 'username': current_user['nickname']})}"
     result = {"url": url}
     return JSONResponse(content=result)
 
