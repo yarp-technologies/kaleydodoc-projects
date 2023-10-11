@@ -9,11 +9,13 @@ services:
     volumes:
       - ./data:/data
 
+
   api:
     container_name: pdf_convertor_python
-    image: pdf_convertor_python
     build:
-      dockerfile: "docker/api/Dockerfile"
+      context: ./docker/api
+      dockerfile: Dockerfile
+    image: pdf_convertor_python
     volumes:
       - ./files:/files
     ports:
