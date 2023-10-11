@@ -1,5 +1,6 @@
 import motor.motor_asyncio
 
+
 class DBManager:
     def __init__(self, database_name, collection_name):
         # server db URL: "mongodb://mongodb:27017"

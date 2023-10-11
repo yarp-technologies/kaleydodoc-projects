@@ -17,6 +17,7 @@ router = APIRouter(
 
 database = DBManager("PDF_placeholder", "users")
 
+
 @router.post("/placeholder_items")
 async def upload_docx(current_user: Annotated[dict, Depends(get_current_user_api)], file: UploadFile = File(...)):
     '''
@@ -33,6 +34,7 @@ async def upload_docx(current_user: Annotated[dict, Depends(get_current_user_api
                                             {file.filename: file_path},
                                             transform_user)
     return JSONResponse(content=dict_tags(tags))
+
 
 @router.post("/placeholder_process", response_class=FileResponse)
 async def process_data(filename: str, data: Dict[str, str], current_user: Annotated[dict, Depends(get_current_user_api)]):
@@ -54,6 +56,7 @@ async def process_data(filename: str, data: Dict[str, str], current_user: Annota
                                             {"_".join(file.split("_")[1::]): filler},
                                             transform_user)
     return FileResponse(filler, filename=filename)
+
 
 @router.post("/placeholder_link_process")
 async def process_data(filename: str, data: Dict[str, str], current_user: Annotated[dict, Depends(get_current_user_api)]):
@@ -79,4 +82,3 @@ async def process_data(filename: str, data: Dict[str, str], current_user: Annota
     url = f"{SERVER_URL}/link/file?{urlencode({'filename': file, 'username': current_user['nickname']})}"
     result = {"url": url}
     return JSONResponse(content=result)
-
