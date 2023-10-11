@@ -1,6 +1,6 @@
 FROM python:3.10-slim
 
-WORKDIR /
+WORKDIR /PDF_placeholder
 
 RUN echo deb http://httpredir.debian.org/debian/ buster main contrib non-free >> /etc/apt/sources.list \
     && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections \
